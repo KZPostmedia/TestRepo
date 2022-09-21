@@ -68,7 +68,7 @@ Postmedia.adConfig = {
 ]
 };
 document.write("<!-- DisableBrowserCache -->");
-document.write("<script type=\"text/javascript\" src=\"https://secure.canada.com/js/postmedia_obj_init.js?v=1\"></script>");
-document.write("<script type=\"text/javascript\" src=\"https://secure.canada.com/js/analytics/VisitorAPI.js?v=4\"></script>");
+document.write("<script type=\"text/javascript\" src=\"https://cdn.jsdelivr.net/gh/KZPostmedia/TestRepo/js/postmedia_obj_init.js?v=1\"></script>");
+document.write("<script type=\"text/javascript\" src=\"https://cdn.jsdelivr.net/gh/KZPostmedia/TestRepo/js/analytics/VisitorAPI.js?v=4\"></script>");
 document.write("<!-- Sourcepoint breaks in our 3rd party include method. -->");
 document.write("<!-- /postmedia_obj_partner.inc -->");
