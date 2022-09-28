@@ -34,7 +34,7 @@ function getAdConfig() {
           // console.log(keys)
 
           // add all ad slots
-          conf["adslots"] = getAdSlots()
+          conf["adslots"] = getAdsOnPage()
 
           // parse the "url" key
           // if url is dictionary
@@ -319,19 +319,23 @@ function getPropertyValueFromName(name) {
 
 function getAdsOnPage() {
   scripts = document.getElementsByTagName("script")
-  slots = []
+  ads = new Set()
   slotsRegex = getAdSlotTypes().join("|")
   for (let script of scripts) {
-    ad = script.src.match(`ad-(${slotsRegex})\.js`)
-    if (ad !== null) {
-      slots.push({
-        "name": `gpt-${ad}`,
-        "type": ad,
-        "isCompanion": false,
-        "lazy": true,
-        "refresh": true
-      })
+    adMatch = script.src.match(`ad-(${slotsRegex})\.js`)
+    if (adMatch !== null) {
+      ads.add(adMatch[1])
     }
+  }
+  slots = []
+  for (let ad of ads) {
+    slots.push({
+      "name": `gpt-${ad}`,
+      "type": ad,
+      "isCompanion": false,
+      "lazy": true,
+      "refresh": true
+    })
   }
   return slots
 }
