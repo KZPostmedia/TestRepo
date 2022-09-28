@@ -1,5 +1,6 @@
 function getAdConfig() {
   const adConfig = getAdConfigJSON()
+  //TODO: For testing, remove when live
   // windowLoc = window.location
   windowLoc = getMockLocation()
   const site = windowLoc.hostname
@@ -27,7 +28,7 @@ function getAdConfig() {
             }
           }
 
-          // for testing
+          //TODO: for testing, remove when live
           keys["adtest"] = "qa"
 
           // console.log(keys)
@@ -205,6 +206,7 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+//TODO: for testing, remove when live
 function getMockLocation() {  // for use on testing environments
 
   if (getCookie("wp_dev_hostname") !== undefined) {
