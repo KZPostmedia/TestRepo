@@ -27,6 +27,9 @@ function getAdConfig() {
             }
           }
 
+          // for testing
+          keys["adtest"] = "qa"
+
           // console.log(keys)
 
           // add all ad slots
@@ -310,6 +313,64 @@ function getPropertyValueFromName(name) {
     return namePRDict[name]
   }
   return ""
+}
+
+function getAdsOnPage() {
+  scripts = document.getElementsByTagName("script")
+  slots = []
+  slotsRegex = getAdSlotTypes().join("|")
+  for (let script of scripts) {
+    ad = script.src.match(`ad-(${slotsRegex})\.js`)
+    if (ad !== null) {
+      slots.push({
+        "name": `gpt-${ad}`,
+        "type": ad,
+        "isCompanion": false,
+        "lazy": true,
+        "refresh": true
+      })
+    }
+  }
+  return slots
+}
+
+function getAdSlotTypes() {
+  return [
+    'bigboxtop',
+    'bigboxtop2',
+    'bigboxtop3' ,
+    'bigboxmid',
+    'bigboxbot' ,
+    'bigboxbot2',
+    'bigboxbotw300x600',
+    'billboard',
+    'billboardleaderboard',
+    'leaderboard',
+    'leaderboard2', 
+    'leaderboard3',
+    'leaderboard4',
+    'leaderboardmid1',
+    'leaderboardbot',
+    'impulse',
+    'impulsemid' ,
+    'impulsebot' ,
+    'mobileleaderboard',
+    'mobileleaderboardmid',
+    'mobileleaderboardmid2',
+    'mobileleaderboardbot',
+    'mobilebigboxtop',
+    'mobilebigboxtop2', 
+    'mobilebigboxmid',
+    'mobilebigboxmid2',
+    'mobilebigboxbot',
+    'mobilebigboxbot2',
+    'oop',
+    'skyscraper',
+    'tile',
+    'tile2',
+    'tile3',
+    'wallpaper'
+  ]
 }
 
 function getAdSlots() {
