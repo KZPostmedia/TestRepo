@@ -34,7 +34,7 @@ function getAdConfig() {
           // console.log(keys)
 
           // add all ad slots
-          conf["adslots"] = getAdsOnPage()
+          conf["adslots"] = getAdsBySite(windowLoc.hostname, windowLoc.pathname)
 
           // parse the "url" key
           // if url is dictionary
@@ -315,6 +315,44 @@ function getPropertyValueFromName(name) {
     return namePRDict[name]
   }
   return ""
+}
+
+function getAdsBySite(site, path) {
+  adTypes = []
+
+  if (site.indexOf("remembering") !== -1) {
+    if (path.length <= 1 || path.indexOf("/obituaries/all-categories") == 0) {
+      adTypes = ['leaderboard', 'leaderboardbot', 'bigboxtop', 'bigboxbot', 'mobilebigboxtop', 'mobilebigboxbot2']
+    }
+    else if (path.indexOf("/obituaries") == 0 || path.indexOf("/news") == 0 || path.indexOf("/learn-and-prepare") == 0) {
+      adTypes = ['bigboxtop', 'bigboxbot', 'mobilebigboxtop', 'mobilebigboxbot2', 'bigboxmid', 'mobilebigboxmid']
+    }
+  }
+
+  else if (site.indexOf("classifieds") !== -1) {
+    adTypes = ['leaderboard', 'bigboxtop', 'oop']
+    // 12 classifieds sites randomly use a different ad slot
+    if (site.match("winnipegsun|calgaryherald|edmontonjournal|leaderpost|montrealgazette|nationalpost|ottawacitizen|theprovince|thestarphoenix|vancouversun|windsorstar|ontariofarmer")) {
+      adTypes.push('bigboxbot')
+    }
+    else adTypes.push('bigboxbot2')
+  }
+
+  else if (site.indexOf("working") !== -1) {
+    adTypes = ["leaderboard", "bigboxbot", "bigboxtop"]
+  }
+
+  slots = []
+  for (let ad of adTypes) {
+    slots.push({
+      "name": `gpt-${ad}`,
+      "type": ad,
+      "isCompanion": false,
+      "lazy": true,
+      "refresh": true
+    })
+  }
+  return slots
 }
 
 function getAdsOnPage() {
