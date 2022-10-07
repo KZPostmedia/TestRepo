@@ -155,28 +155,6 @@ function getAdConfig() {
 
 }
 
-function parsePrs() {
-  const adConfig = getAdConfigJSON()
-  prClass = {}
-  prRem = {}
-  for (let s of adConfig.site) {
-    site = s["@domain"]
-    pr = []
-    for (let p of s["keyValues"]) {
-      if (p["@name"] === "pr") pr = p["#text"]
-    }
-    if (site.indexOf("remembering") !== -1) {
-      siteName = site.split('.')[0]
-      prRem[siteName] = pr.split(',').slice(1)
-    }
-    else if (site.indexOf("classifieds") !== -1) {
-      siteName = site.split('.')[1]
-      prClass[siteName] = pr.split(',').slice(1)
-    }
-  }
-  return [prClass, prRem]
-}
-
 //regex for replacing old links with new (testing directory)
 // str.replaceAll(/(?:secure|www)\.canada\.com.*\/(.*)\.(?:js|inc)/g, "storage.googleapis.com/pmd-dev-northamerica-northeast1-asset-ads-pub/test-assets/legacyAdConfig/$1.js")
 
@@ -189,7 +167,11 @@ function getCookie(name) {
 //TODO: for testing, remove when live
 function getMockLocation() {  // for use on testing environments
 
-  if (getCookie("wp_dev_hostname") !== undefined) {
+  if (window.location.hostname === 'newworking.wehaaserver.com') {
+    test_domain = 'www.working.com'
+    console.log(`using test_domain = ${test_domain}`)
+  }
+  else if (getCookie("wp_dev_hostname") !== undefined) {
     test_domain = getCookie("wp_dev_hostname").replace("test", "")
     console.log(`got cookie, using test_domain = ${test_domain}`)
   }
@@ -560,12 +542,7 @@ function getAdsBySite(site, path) {
   }
 
   else if (site.indexOf("classifieds") !== -1) {
-    adTypes = ['leaderboard', 'bigboxtop', 'oop']
-    // 12 classifieds sites randomly use a different ad slot
-    if (site.match("winnipegsun|calgaryherald|edmontonjournal|leaderpost|montrealgazette|nationalpost|ottawacitizen|theprovince|thestarphoenix|vancouversun|windsorstar|ontariofarmer")) {
-      adTypes.push('bigboxbot')
-    }
-    else adTypes.push('bigboxbot2')
+    adTypes = ['leaderboard', 'bigboxtop', 'oop', 'bigboxbot2']
   }
 
   else if (site.indexOf("working") !== -1) {
